@@ -101,13 +101,6 @@ msg.channel.send({embed: embed})
 		return undefined;
 
 
-	} else if (command === `parar`) {
-		if  (!msg.member.hasPermissions(["MANAGE_GUILD"])) return msg.reply("<:blobastonished:395358298968424448> **l** Desculpe, porém você não tem permissão para usar este comando bobinho(a). Por isso criei a limitação DJ, para mais informações. Use `"+PREFIX+"dj`");
-		if (!msg.member.voiceChannel) return msg.channel.send(':x: **l** Você não ficou em um canal de voz!');
-		if (!serverQueue) return msg.channel.send('Nada tocando...');
-		serverQueue.songs = [];
-		serverQueue.connection.dispatcher.end('oi');
-		return undefined;
 	} else if (command === `dj`) {			
 			msg.reply(`<:blobcouncil:395358351195897866> **l** as permissões DJ foram criadas para impedir que pessoas não autorizadas abusem do bot, assim limitando o bot por permissão. Essa permissão seria: MANAGE_GUILD ou Gerenciar Servidor.`)
 			return undefined;
