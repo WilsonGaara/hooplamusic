@@ -184,7 +184,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		
 	};
 	if(song.canal.includes('VEVO')) { return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
-		serverQueue.voiceChannel.leave();
+		
 
 	serverQueue.songs = [];
 	serverQueue.connection.dispatcher.end();
@@ -231,7 +231,7 @@ function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 
 	if (!song) {
-		serverQueue.voiceChannel.leave();
+		//serverQueue.voiceChannel.leave();
 		queue.delete(guild.id);
 		return;
 	}
