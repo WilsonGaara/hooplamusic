@@ -198,12 +198,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		} else {
 		
 		}
-		if(song.canal === 'Vevo') return
-			serverQueue.voiceChannel.leave();
-		
-			serverQueue.songs = [];
-			serverQueue.connection.dispatcher.end();
-			queue.delete(guild.id)
+	
 
 	if (!serverQueue) {
 		const queueConstruct = {
