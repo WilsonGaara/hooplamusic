@@ -2,13 +2,13 @@
 
 
 const { Client, Util } = require('discord.js');
-const {PREFIX} = require('./config');
+const {TOKEN, PREFIX, GOOGLE_API_KEY } = require('./config');
 const YouTube = require('simple-youtube-api');
 const ytdl = require('ytdl-core');
 
 const client = new Client({ disableEveryone: true });
 
-const youtube = new YouTube(process.env.YT_API);
+const youtube = new YouTube(GOOGLE_API_KEY);
 
 const queue = new Map();
 
@@ -30,7 +30,7 @@ client.on('message', async msg => { // eslint-disable-line
 
 const moment = require('moment');
 moment.locale('pt-BR');
-	if (command === `play`) {
+	if (command === `tocar`) {
 		const voiceChannel = msg.member.voiceChannel;
 		if (!voiceChannel) return msg.channel.send(':x: **l** Me desculpe, mas você precisa usar os comandos em um canal de voz!');
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
@@ -65,7 +65,7 @@ msg.channel.send({embed: embed})
 
 					// eslint-disable-next-line max-depth
 					try {
-						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
+						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 6, {
 							maxMatches: 1,
 							time: 20000,
 							errors: ['time']
@@ -76,6 +76,7 @@ msg.channel.send({embed: embed})
 					}
 					const videoIndex = parseInt(response.first().content);
 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
+				
 				} catch (err) {
 					console.error(err);
 					return msg.channel.send('🆘 **l** Não consegui encontrar.');
@@ -83,11 +84,14 @@ msg.channel.send({embed: embed})
 			}
 			return handleVideo(video, msg, voiceChannel);
 		}
-	} else if (command === `skip`) {
+	} else if (command === `pular`) {
+		if  (!msg.member.hasPermissions(["MANAGE_GUILD"])) return msg.reply("<:blobastonished:395358298968424448> **l** Desculpe, porém você não tem permissão para usar este comando bobinho(a). Por isso criei a limitação DJ, para mais informações. Use `"+PREFIX+"dj`");
 		if (!msg.member.voiceChannel) return msg.channel.send(':x: **l** Você não ficou em um canal de voz!');
 		if (!serverQueue) return msg.channel.send('Nada tocando...');
-		serverQueue.connection.dispatcher.end('Puladas 1 música.');
-		msg.reply('a música foi pulada.')
+		msg.reply(`a música foi pulada.`)
+
+		serverQueue.connection.dispatcher.end();
+		
 		return undefined;
 
 
@@ -102,13 +106,18 @@ msg.channel.send({embed: embed})
 		return undefined;
 
 
-	} else if (command === `stop`) {
+	} else if (command === `parar`) {
+		if  (!msg.member.hasPermissions(["MANAGE_GUILD"])) return msg.reply("<:blobastonished:395358298968424448> **l** Desculpe, porém você não tem permissão para usar este comando bobinho(a). Por isso criei a limitação DJ, para mais informações. Use `"+PREFIX+"dj`");
 		if (!msg.member.voiceChannel) return msg.channel.send(':x: **l** Você não ficou em um canal de voz!');
 		if (!serverQueue) return msg.channel.send('Nada tocando...');
 		serverQueue.songs = [];
-		serverQueue.connection.dispatcher.end('Ok...');
+		serverQueue.connection.dispatcher.end();
 		return undefined;
-	} else if (command === `volume`) {
+	} else if (command === `dj`) {			
+			msg.reply(`<:blobcouncil:395358351195897866> **l** as permissões DJ foram criadas para impedir que pessoas não autorizadas abusem do bot, assim limitando o bot por permissão. Essa permissão seria: MANAGE_GUILD ou Gerenciar Servidor.`)
+			return undefined;
+		} else if (command === `volume`) {
+		if  (!msg.member.hasPermissions(["MANAGE_GUILD"])) return msg.reply("<:blobastonished:395358298968424448> **l** Desculpe, porém você não tem permissão para usar este comando bobinho(a). Por isso criei a limitação DJ, para mais informações. Use `"+PREFIX+"dj`");
 		if (!msg.member.voiceChannel) return msg.channel.send(':x: **l** Você não ficou em um canal de voz!');
 		if (!serverQueue) return msg.channel.send('🇽 **l** Nada tocando.');
 		if (!args[1]) return msg.channel.send(`Volume atual é: **${serverQueue.volume}**`);
@@ -116,27 +125,25 @@ msg.channel.send({embed: embed})
 		serverQueue.volume = args[1];
 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
 		return msg.channel.send("🔈 **l** Volume alterado para `" + args[1] + "`");
-	} else if (command === `np`) {
+	} else if (command === `tocando`) {
 
 		if (!serverQueue) return msg.channel.send('🇽 **l** Nada tocando.');
 
 		const Discord1 = require('discord.js');
 		const embed = new Discord1.RichEmbed()
-		.setAuthor(`Tocando agora`, msg.author.displayAvatarURL)
+		.setAuthor(`${serverQueue.songs[0].canal}`)
 		.setColor(`RED`)
 		.setDescription(`[${serverQueue.songs[0].title}](${serverQueue.songs[0].url}) - YouTube`)
 	.setFooter(`Agora tocando - Música • ${moment().calendar()}`, msg.author.displayAvatarURL)
 
 		 msg.channel.send({embed: embed})
-		return msg.channel.send('Resumindo...\n🎶 **l** Tocando agora: **' + serverQueue.songs[0].title +  '\n** `URL: ' + serverQueue.songs[0].url + '`')
+		return undefined;
 
 
 
-	} else if (command === `queue`) {
+	} else if (command === `lista`) {
 		if (!serverQueue) return msg.channel.send('🇽 **l** Nada tocando.');
 
-		msg.channel.send(`__**Fila de músicas:**__ \n\n\n ${serverQueue.songs.map(song => `**-** **${song.title}**`).join('\n')}\n\n ▶ l **Agora tocando**: ${serverQueue.songs[0].title} \n\n To evitando que dê erros por config de privacidade, então modo de pobre!`); 
-		
 		const Discord = require('discord.js');
 	
 		const embed = new Discord.RichEmbed()
@@ -145,11 +152,11 @@ msg.channel.send({embed: embed})
 	.setThumbnail(`${serverQueue.songs[0].thumb}`)
 	.setFooter(`Fila de músicas - Música • ${moment().calendar()}`, msg.author.displayAvatarURL)
 
-		return msg.author.send({embed: embed})
+		return msg.channel.send({embed: embed})
 
 
 
-	} else if (command === `pause`) {
+	} else if (command === `pausar`) {
 		if (serverQueue && serverQueue.playing) {
 			serverQueue.playing = false;
 			serverQueue.connection.dispatcher.pause();
@@ -157,7 +164,7 @@ msg.channel.send({embed: embed})
 		}
 		return msg.channel.send('🇽 **l** Nada tocando.');
 
-	} else if (command === `resume`) {
+	} else if (command === `resumir`) {
 		if (serverQueue && !serverQueue.playing) {
 			serverQueue.playing = true;
 			serverQueue.connection.dispatcher.resume();
@@ -178,8 +185,25 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		url: `https://www.youtube.com/watch?v=${video.id}`,
 		thumb: `https://img.youtube.com/vi/${video.id}/sddefault.jpg`,
 		duration: video.durationSeconds,
+		canal: video.channel.title
 		
 	};
+	if(song.canal.includes('VEVO')) { return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
+		serverQueue.voiceChannel.leave();
+
+	serverQueue.songs = [];
+	serverQueue.connection.dispatcher.end();
+	queue.delete(guild.id)
+
+		} else {
+		
+		}
+		if(song.canal === 'Vevo') return
+			serverQueue.voiceChannel.leave();
+		
+			serverQueue.songs = [];
+			serverQueue.connection.dispatcher.end();
+			queue.delete(guild.id)
 
 	if (!serverQueue) {
 		const queueConstruct = {
@@ -236,7 +260,8 @@ function play(guild, song) {
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
-serverQueue.textChannel.send(':minidisc: **l** '+ song.title +'`['+minutes+':'+seconds+']`')
+
+serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
 }
 
-client.login(process.env.BOT_TOKEN);
+client.login(TOKEN);
