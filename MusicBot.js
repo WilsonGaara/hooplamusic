@@ -176,8 +176,8 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		canal: video.channel.title
 		
 	};
-	if(song.canal.includes('VEVO')) { return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
-					}
+	if(song.canal.includes('VEVO')) return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
+					
 
 	if (!serverQueue) {
 		const queueConstruct = {
@@ -196,6 +196,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
 			play(msg.guild, queueConstruct.songs[0]);
+				msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 		} catch (error) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
@@ -205,7 +206,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		serverQueue.songs.push(song);
 		console.log(serverQueue.songs);
 		if (playlist) return undefined;
-		else return msg.channel.send(`✅ **${song.title}** has been added to the queue!`);
+		else return msg.channel.send(`✅ **${song.title}** foi adcionada para a lista!`);
 	}
 	return undefined;
 }
@@ -235,7 +236,7 @@ function play(guild, song) {
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
-serverQueue.textChannel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
+	
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
 
 }
