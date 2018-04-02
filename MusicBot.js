@@ -197,7 +197,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
 			play(msg.guild, queueConstruct.songs[0]);
-				msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
+				msg.channel.send(':white_check_mark: **|** Estou em: `' + serverQueue.voiceChannel.name + '`');
 		} catch (error) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
@@ -215,11 +215,11 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 
-	if (!song) {
-		serverQueue.voiceChannel.leave();
-		queue.delete(guild.id);
-		return;
-	}
+	//if (!song) {
+	//	serverQueue.voiceChannel.leave();
+	//	queue.delete(guild.id);
+	//	return;
+//}
 	console.log(serverQueue.songs);
 
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
@@ -237,6 +237,9 @@ function play(guild, song) {
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
+	
+	
+	
 	
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
 
