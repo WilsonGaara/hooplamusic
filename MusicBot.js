@@ -195,7 +195,6 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		try {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
-		
 			play(msg.guild, queueConstruct.songs[0]);
 		
 		} catch (error) {
@@ -240,6 +239,6 @@ var seconds = Math.floor(song.duration % 60);
 serverQueue.textChannel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
 }
-
+}
 
 client.login(process.env.BOT_TOKEN);
