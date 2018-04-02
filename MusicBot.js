@@ -177,7 +177,6 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		
 	};
 	if(song.canal.includes('VEVO')) { return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
-	//serverQueue.connection.dispatcher.end('ok');
 
 
 	if (!serverQueue) {
@@ -196,7 +195,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		try {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
-			serverQueue.textChannel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
+			msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 			play(msg.guild, queueConstruct.songs[0]);
 			
 		} catch (error) {
@@ -238,15 +237,15 @@ if (!song) {
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
-      
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+}
 	const moment = require('moment');
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
 
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
-    }
+}
 
 client.login(process.env.BOT_TOKEN);
