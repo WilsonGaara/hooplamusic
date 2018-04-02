@@ -238,14 +238,16 @@ if (!song) {
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
-	.on('error', error => console.error(error));
-	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+        .on('error', error => console.error(error));
+        
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    }
 	const moment = require('moment');
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
 
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
-}
+    }
 
 client.login(process.env.BOT_TOKEN);
