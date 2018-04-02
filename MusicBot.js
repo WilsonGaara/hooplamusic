@@ -224,6 +224,13 @@ if (!song) {
 	}
 	console.log(serverQueue.songs);
 
+	//const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
+	//	.on('end', reason => {
+		//	if (reason === 'Stream is not generating quickly enough.') serverQueue.textChannel.send('Opa! Primeira música da lista acabou. Caso a lista encerre sairei de: `' + serverQueue.voiceChannel.name + '`');
+		//	else console.log(reason);
+		//	serverQueue.songs.shift();
+		//	play(guild, serverQueue.songs[0]);
+		//})
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 		.on('end', reason => {
 			if (reason === 'Stream is not generating quickly enough.') serverQueue.textChannel.send('Opa! Primeira música da lista acabou. Caso a lista encerre sairei de: `' + serverQueue.voiceChannel.name + '`');
@@ -231,7 +238,7 @@ if (!song) {
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
-		.on('error', error => console.error(error));
+	.on('error', error => console.error(error));
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 	const moment = require('moment');
 	moment.locale('pt-BR');
