@@ -177,7 +177,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		
 	};
 	if(song.canal.includes('VEVO')) { return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
-
+					}
 
 	if (!serverQueue) {
 		const queueConstruct = {
@@ -192,30 +192,28 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 
 		queueConstruct.songs.push(song);
 
-		try {
+			try {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
 			play(msg.guild, queueConstruct.songs[0]);
-		
 		} catch (error) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
-			return msg.channel.send(`Erro: Não pude entrar no canal (${error})`);
+			return msg.channel.send(`I could not join the voice channel: ${error}`);
 		}
 	} else {
 		serverQueue.songs.push(song);
 		console.log(serverQueue.songs);
 		if (playlist) return undefined;
-		else return msg.reply(`:minidisc: **l** **${song.title}** foi adcionada na fila.`);
+		else return msg.channel.send(`✅ **${song.title}** has been added to the queue!`);
 	}
 	return undefined;
 }
 
-
 function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 
-if (!song) {
+	if (!song) {
 		serverQueue.voiceChannel.leave();
 		queue.delete(guild.id);
 		return;
@@ -224,13 +222,14 @@ if (!song) {
 
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 		.on('end', reason => {
-			if (reason === 'Stream is not generating quickly enough.') serverQueue.textChannel.send('Opa! Primeira música da lista acabou. Caso a lista encerre sairei de: `' + serverQueue.voiceChannel.name + '`');
+			if (reason === 'Stream is not generating quickly enough.') serverQueue.textChannel.send('Oops! Música acabou. Caso a lista acabe sairei de: `' + serverQueue.voiceChannel.name + '`');
 			else console.log(reason);
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
 		.on('error', error => console.error(error));
-		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+
 		
 	const moment = require('moment');
 	moment.locale('pt-BR');
@@ -238,7 +237,7 @@ if (!song) {
 var seconds = Math.floor(song.duration % 60);
 serverQueue.textChannel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
-}
+
 }
 
 client.login(process.env.BOT_TOKEN);
