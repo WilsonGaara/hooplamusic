@@ -237,7 +237,7 @@ if (!song) {
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
-msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
+serverQueue.textChannel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
 }
 
