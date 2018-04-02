@@ -196,8 +196,9 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
 			msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
+	
 			play(msg.guild, queueConstruct.songs[0]);
-			
+		
 		} catch (error) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
@@ -223,13 +224,6 @@ if (!song) {
 	}
 	console.log(serverQueue.songs);
 
-	//const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-	//	.on('end', reason => {
-		//	if (reason === 'Stream is not generating quickly enough.') serverQueue.textChannel.send('Opa! Primeira música da lista acabou. Caso a lista encerre sairei de: `' + serverQueue.voiceChannel.name + '`');
-		//	else console.log(reason);
-		//	serverQueue.songs.shift();
-		//	play(guild, serverQueue.songs[0]);
-		//})
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 		.on('end', reason => {
 			if (reason === 'Stream is not generating quickly enough.') serverQueue.textChannel.send('Opa! Primeira música da lista acabou. Caso a lista encerre sairei de: `' + serverQueue.voiceChannel.name + '`');
@@ -237,15 +231,16 @@ if (!song) {
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
-    
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-}
+		.on('error', error => console.error(error));
+		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+		
 	const moment = require('moment');
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
 var seconds = Math.floor(song.duration % 60);
 
 serverQueue.textChannel.send(':minidisc: **l** Tocando agora `'+ song.title +'`\n'+'`['+minutes+':'+seconds + ']`')
+}
 }
 
 client.login(process.env.BOT_TOKEN);
