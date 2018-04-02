@@ -178,12 +178,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 	};
 	if(song.canal.includes('VEVO')) { return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
 	//serverQueue.connection.dispatcher.end('ok');
-	
 
-		} else {
-		
-		}
-	
 
 	if (!serverQueue) {
 		const queueConstruct = {
@@ -201,7 +196,9 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		try {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
+			msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 			play(msg.guild, queueConstruct.songs[0]);
+			
 		} catch (error) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
@@ -220,8 +217,9 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 
-	if (!song) {
-		
+if (!song) {
+		serverQueue.voiceChannel.leave();
+		queue.delete(guild.id);
 		return;
 	}
 	console.log(serverQueue.songs);
