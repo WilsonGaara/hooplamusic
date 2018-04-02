@@ -196,7 +196,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		try {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
-			msg.channel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
+			serverQueue.textChannel.send(':white_check_mark: **|** Entrando em: `' + serverQueue.voiceChannel.name + '`');
 			play(msg.guild, queueConstruct.songs[0]);
 			
 		} catch (error) {
@@ -238,10 +238,9 @@ if (!song) {
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
-        .on('error', error => console.error(error));
-        
+      
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    }
+    
 	const moment = require('moment');
 	moment.locale('pt-BR');
 	var minutes = Math.floor(song.duration / 60);
