@@ -176,7 +176,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		canal: video.channel.title
 		
 	};
-	if(song.canal.includes('VEVO')) return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
+	//if(song.canal.includes('VEVO')) return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
 					
 
 	if (!serverQueue) {
@@ -193,6 +193,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		queueConstruct.songs.push(song);
 
 			try {
+				const serverQueue = queue.get(msg.guild.id);
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
 			play(msg.guild, queueConstruct.songs[0]);
