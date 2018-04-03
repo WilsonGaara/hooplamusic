@@ -88,7 +88,7 @@ msg.channel.send({embed: embed})
 		if  (!msg.member.hasPermissions(["MANAGE_GUILD"])) return msg.reply("<:blobastonished:395358298968424448> **l** Desculpe, porém você não tem permissão para usar este comando bobinho(a). Por isso criei a limitação DJ, para mais informações. Use `"+PREFIX+"dj`");
 		if (!msg.member.voiceChannel) return msg.channel.send(':x: **l** Você não ficou em um canal de voz!');
 		if (!serverQueue) return msg.channel.send('Nada tocando...')
-		serverQueue.connection.dispatcher.end('oi');
+		msg.channel.send(':x: **l** Desculpe, porém este comando não está funcionando mais ou parou de trabalhar');
 		return undefined;
 
 
@@ -215,11 +215,11 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 
-	//if (!song) {
-	//	serverQueue.voiceChannel.leave();
-	//	queue.delete(guild.id);
-	//	return;
-//}
+if (!song) {
+		serverQueue.voiceChannel.leave();
+		queue.delete(guild.id);
+		return;
+}
 	console.log(serverQueue.songs);
 
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
