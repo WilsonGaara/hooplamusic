@@ -88,7 +88,7 @@ msg.channel.send({embed: embed})
 		if  (!msg.member.hasPermissions(["MANAGE_GUILD"])) return msg.reply("<:blobastonished:395358298968424448> **l** Desculpe, porém você não tem permissão para usar este comando bobinho(a). Por isso criei a limitação DJ, para mais informações. Use `"+PREFIX+"dj`");
 		if (!msg.member.voiceChannel) return msg.channel.send(':x: **l** Você não ficou em um canal de voz!');
 		if (!serverQueue) return msg.channel.send('Nada tocando...')
-		msg.channel.send(':x: **l** Desculpe, porém este comando não está funcionando mais ou parou de trabalhar');
+		msg.channel.send('<:x_:430823244946472962> **l** Desculpe, porém este comando não está funcionando mais ou parou de trabalhar');
 		return undefined;
 
 
