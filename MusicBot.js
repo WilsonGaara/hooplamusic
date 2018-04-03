@@ -176,7 +176,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		canal: video.channel.title
 		
 	};
-	//if(song.canal.includes('VEVO')) return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
+	if(song.canal.includes('VEVO')) return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
 					
 
 	if (!serverQueue) {
@@ -197,7 +197,6 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 			var connection = await voiceChannel.join();
 			queueConstruct.connection = connection;
 			play(msg.guild, queueConstruct.songs[0]);
-				msg.channel.send(':white_check_mark: **|** Estou em: `' + serverQueue.voiceChannel.name + '`');
 		} catch (error) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
