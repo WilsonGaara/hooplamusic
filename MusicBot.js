@@ -65,9 +65,9 @@ msg.channel.send({embed: embed})
 
 					// eslint-disable-next-line max-depth
 					try {
-						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 6, {
+						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 7, {
 							maxMatches: 1,
-							time: 20000,
+							time: 10000,
 							errors: ['time']
 						});
 					} catch (err) {
@@ -92,14 +92,7 @@ msg.channel.send({embed: embed})
 		return undefined;
 
 
-	} else if (command === `ping`) {
-		if(Math.round(client.ping) < 75) return msg.channel.send(':ping_pong: l Ping:  ' +   '`' + Math.round(client.ping) +  '`' + '\nStatus: Ótimo, Shard trabalhando como nunca. 😃')
-
-
-			if(Math.round(client.ping) > 200) return msg.channel.send(':ping_pong: l Ping:  ' +   '`' + Math.round(client.ping) +  '`' + '\nStatus: Ruim, muita lentidão no shard. 😖')
-				msg.channel.send(':ping_pong: l Ping:  ' +   '`' + Math.round(client.ping) +  '`' + '\n Tudo operacional, shard funcionando normalmente com um pouco de delay. ✅')
-		return undefined;
-
+	
 
 	} else if (command === `dj`) {			
 			msg.reply(`<:blobcouncil:395358351195897866> **l** as permissões DJ foram criadas para impedir que pessoas não autorizadas abusem do bot, assim limitando o bot por permissão. Essa permissão seria: MANAGE_GUILD ou Gerenciar Servidor.`)
@@ -176,8 +169,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		canal: video.channel.title
 		
 	};
-	if(song.canal.includes('VEVO')) return msg.reply(`<:blobfrowningbig:395358289917116438> **l** Desculpe, mas não posso reproduzir músicas **VEVO**. Pulando esta música VEVO...`)
-					
+				
 
 	if (!serverQueue) {
 		const queueConstruct = {
