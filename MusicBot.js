@@ -112,7 +112,7 @@ msg.channel.send({embed: embed})
 
 		const Discord1 = require('discord.js');
 		const embed = new Discord1.RichEmbed()
-		.setAuthor(`${serverQueue.songs[0].canal}`, message.guild.iconURL)
+		.setAuthor(`${serverQueue.songs[0].canal}`, msg.guild.iconURL)
 		.setColor(`RED`)
 		.setDescription(`[${serverQueue.songs[0].title}](${serverQueue.songs[0].url})`)
 	.setFooter(`Agora tocando - Música • ${moment().calendar()}`, msg.author.displayAvatarURL)
