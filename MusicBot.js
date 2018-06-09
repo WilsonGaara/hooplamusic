@@ -2,12 +2,12 @@
 
 
 const { Client, Util } = require('discord.js');
-const { PREFIX } = require('./config');
+const { PREFIX, GOOGLE_API_KEY, TOKEN } = require('./config');
 const YouTube = require('simple-youtube-api');
 const ytdl = require('ytdl-core');
 const client = new Client({ disableEveryone: true });
 
-const youtube = new YouTube(process.env.YT_API);
+const youtube = new YouTube(process.env.YT);
 
 const queue = new Map();
 
@@ -53,12 +53,12 @@ moment.locale('pt-BR');
 				var video = await youtube.getVideo(url);
 			} catch (error) {
 				try {
-					var videos = await youtube.searchVideos(searchString, 4);
+					var videos = await youtube.searchVideos(searchString, 3);
 					let index = 0;
 					const Discord = require('discord.js');
 					let embed = new Discord.RichEmbed()
-					.setColor(`BLUE`)
-					.setDescription(`**Seleção de música** \n ${videos.map(video2 => `**${++index} -** [${video2.title}](${video2.url})`).join('\n')} \n Por favor, forneça um valor para selecionar um dos resultados da pesquisa variando de 1 à 3.`)
+				.setAuthor('Escolha.')
+					.setDescription(`${videos.map(video2 => `**${++index} -** [${video2.title}](${video2.url})`).join('\n')} \n Por favor, forneça um valor para selecionar um dos resultados da pesquisa variando de 1 à 3.`)
 					.setFooter(`Seleção de música - Música • ${moment().calendar()}`, msg.author.displayAvatarURL)
 msg.channel.send({embed: embed})
 
@@ -112,7 +112,7 @@ msg.channel.send({embed: embed})
 
 		const Discord1 = require('discord.js');
 		const embed = new Discord1.RichEmbed()
-		.setAuthor(`${serverQueue.songs[0].canal}`, msg.guild.iconURL)
+		.setAuthor(`${serverQueue.songs[0].canal}`, message.guild.iconURL)
 		.setColor(`RED`)
 		.setDescription(`[${serverQueue.songs[0].title}](${serverQueue.songs[0].url})`)
 	.setFooter(`Agora tocando - Música • ${moment().calendar()}`, msg.author.displayAvatarURL)
